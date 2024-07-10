@@ -6,6 +6,7 @@ import pywintypes
 
 class TextGetter(object):
     instance = None
+    #make sure that only one instance of a this type is created at a time
     def __new__(cls,*args,**kwargs):
         if not cls.instance:
             cls.instance = super().__new__(cls)
@@ -17,7 +18,6 @@ class TextGetter(object):
             self.threads_running = False
             self.stop_bg_task = False
             self.new_data_event = threading.Event()
-            self.test_event = threading.Event()
             self.initialized = True
             self.signal = external_signal
 
@@ -33,7 +33,7 @@ class TextGetter(object):
                 self.threads = []
             
             self.threads.append(threading.Thread(target=self.wait_for_info, daemon=True))
-            self.threads.append(keyboard.GlobalHotKeys({'<ctrl>+c': self.on_activate_copy, '<ctrl>+1': self.on_activate_exit}))
+            self.threads.append(keyboard.GlobalHotKeys({'<ctrl>+c': self.on_activate_copy}))
 
             self.threads[0].start()
             self.threads[1].start()
@@ -72,9 +72,7 @@ class TextGetter(object):
                     if data_found:
                         self.signal.emit(data)
                     self.last_seq_nr = self.seq_nr
-
-                    self.test_event.set()
-
+                    
                     break
 
                 except pywintypes.error:

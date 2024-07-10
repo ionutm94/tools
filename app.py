@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtWidgets import (QApplication, QMainWindow)
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QFileDialog)
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import pyqtSignal, QObject
 
@@ -17,20 +17,21 @@ class Window(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.connectSignalsSlots()
         self.signal_emitter = SignalEmitter()
-        self.signal_emitter.new_text_signal.connect(self.my_func)
+        self.signal_emitter.new_text_signal.connect(self.update_text_field)
         self.getterObj = None
 
     def connectSignalsSlots(self):
-        self.pushButton.clicked.connect(self.start_my_thread)
-        self.pushButton_2.clicked.connect(self.stop_my_thread)
+        self.startTextGetterButton.clicked.connect(self.start_my_thread)
+        self.stopTextGetterButton.clicked.connect(self.stop_my_thread)
 
     def start_my_thread(self):
         self.getterObj = TextGetter(self.signal_emitter.new_text_signal)
         self.getterObj.start_threads()
 
     def stop_my_thread(self):
-        #self.getterObj.threads.clear()
         self.getterObj.on_activate_exit()
+        #self.filename, _ = QFileDialog.getOpenFileName()
+        print(self.filename)
 
         threads_active = True
         while threads_active:
@@ -42,8 +43,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.getterObj.threads.clear()
 
         
-    def my_func(self,value):
-        print(value)
+    def update_text_field(self,value):
+        self.textGetterTextField.insertPlainText(value + "\n")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

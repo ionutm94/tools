@@ -12,18 +12,22 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
-    #custom_signal = QtCore.pyqtSignal()
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(20, 30, 75, 23))
-        self.pushButton.setObjectName("pushButton")
-        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(100, 30, 75, 23))
-        self.pushButton_2.setObjectName("pushButton_2")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.startTextGetterButton = QtWidgets.QPushButton(self.centralwidget)
+        self.startTextGetterButton.setObjectName("startTextGetterButton")
+        self.horizontalLayout.addWidget(self.startTextGetterButton)
+        self.stopTextGetterButton = QtWidgets.QPushButton(self.centralwidget)
+        self.stopTextGetterButton.setObjectName("stopTextGetterButton")
+        self.horizontalLayout.addWidget(self.stopTextGetterButton)
+        self.textGetterTextField = QtWidgets.QTextEdit(self.centralwidget)
+        self.textGetterTextField.setObjectName("textGetterTextField")
+        self.horizontalLayout.addWidget(self.textGetterTextField)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -39,5 +43,5 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton.setText(_translate("MainWindow", "Start"))
-        self.pushButton_2.setText(_translate("MainWindow", "Stop"))
+        self.startTextGetterButton.setText(_translate("MainWindow", "Start"))
+        self.stopTextGetterButton.setText(_translate("MainWindow", "Stop"))
