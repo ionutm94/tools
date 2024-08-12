@@ -19,7 +19,7 @@ class TextGetter(object):
             self.stop_bg_task = False
             self.new_data_event = threading.Event()
             self.initialized = True
-            self.signal = external_signal
+            self.signal = external_signal #this is a qt signal used to send data from clipboard
 
     def start_threads(self):
         if not self.threads_running:
@@ -34,6 +34,7 @@ class TextGetter(object):
             
             self.threads.append(threading.Thread(target=self.wait_for_info, daemon=True))
             self.threads.append(keyboard.GlobalHotKeys({'<ctrl>+c': self.on_activate_copy}))
+
 
             self.threads[0].start()
             self.threads[1].start()
@@ -70,7 +71,7 @@ class TextGetter(object):
                     win32clipboard.CloseClipboard()
 
                     if data_found:
-                        self.signal.emit(data)
+                        self.signal.get_data(data)
                     self.last_seq_nr = self.seq_nr
                     
                     break
@@ -86,7 +87,7 @@ class TextGetter(object):
 
 if __name__ == "__main__":
     try:
-        text_obj = TextGetter()
+        text_obj = TextGetter("test")
         text_obj.start_threads()
 
     except KeyboardInterrupt:
